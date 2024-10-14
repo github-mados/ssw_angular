@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
+import { CompanyListComponent } from "./company-list/company-list.component";
 
 @Component({
   selector: 'fbc-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, CompanyListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
