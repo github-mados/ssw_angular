@@ -19,14 +19,20 @@ export class CompanyService {
 
    getCompanies(): Observable<Company[]> {
     return this.httpClient.get<Company[]>(`${this.API_BASE}/company`)
-      .pipe(catchError(this.errorHandler));
+      .pipe(catchError(this.errorHandler<Company[]>));
   }
 
-  private errorHandler(error: Error): Observable<Company[]> {
-    console.error('implement custom errort handler here', error);
-    return new Observable<Company[]>();
-  }
-  
+  deleteCompany(companyId: number): Observable<Company> {
+    return this.httpClient.delete<Company>(`${this.API_BASE}/company/${companyId}`)
+      .pipe(catchError(this.errorHandler<Company>));
+    }
+
+
+  private errorHandler<T>(error: any): Observable<T> {
+      console.error('Failed to get companies', error);
+      return new Observable<T>();
+  } 
+
   // getCompanies () : Company[] {
   //   return [
   //     { name: 'company 1', email: 'email 1', phone: 111 },
