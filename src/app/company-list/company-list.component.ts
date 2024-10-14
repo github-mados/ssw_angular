@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Company } from '../company/company';
+import { CompanyService } from '../company/company.service';
 
 
 @Component({
@@ -11,14 +12,12 @@ import { Company } from '../company/company';
   styleUrl: './company-list.component.scss'
 })
 export class CompanyListComponent {
+  private readonly companyService = inject(CompanyService);
   companies: Company[] = []
 
+  
   ngOnInit(){
-    this.companies = [
-      {name:'a', email:'email',phone:12345},
-      {name:'b', email:'email',phone:12345},
-      {name:'b', email:'email',phone:12345},
-      ]
+    this.companies = this.companyService.getCompanies();
   
   }
 
