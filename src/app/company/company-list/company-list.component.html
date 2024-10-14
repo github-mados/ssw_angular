@@ -1,0 +1,7 @@
+<h1>  
+    Companies
+    <button class="btn btn-success float-end">Add</button>
+  </h1> 
+
+  <fbc-company-table [companies]="(companies$ |async) || []" (companyDeleted)="deleteCompany($event)"></fbc-company-table> 
+  
