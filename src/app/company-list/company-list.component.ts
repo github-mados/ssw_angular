@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Company } from '../company/company';
 import { CompanyService } from '../company/company.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -13,13 +14,17 @@ import { CompanyService } from '../company/company.service';
 })
 export class CompanyListComponent {
   private readonly companyService = inject(CompanyService);
-  companies: Company[] = []
+
+  public companies$!: Observable<Company[]>;
 
   
   ngOnInit(){
-    this.companies = this.companyService.getCompanies();
+     this.companies$ = this.companyService.getCompanies();
   
   }
+
+  
+  
 
 }
 
