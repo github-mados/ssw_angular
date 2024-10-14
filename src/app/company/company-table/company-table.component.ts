@@ -2,12 +2,13 @@ import { Component,OnInit, Input, Output, EventEmitter, input, ChangeDetectionSt
 import { Observable } from 'rxjs';
 import { Company } from '../company';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'fbc-company-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './company-table.component.html',
   styleUrl: './company-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

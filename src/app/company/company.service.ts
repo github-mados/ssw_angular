@@ -26,6 +26,12 @@ export class CompanyService {
     return this.httpClient.delete<Company>(`${this.API_BASE}/company/${companyId}`)
       .pipe(catchError(this.errorHandler<Company>));
     }
+   
+    saveCompany(company: Company): Observable<Company> {
+      return this.httpClient.post<Company>(`${this.API_BASE}/company`, company).pipe(
+        catchError(this.errorHandler<Company>)
+      );
+    }
 
 
   private errorHandler<T>(error: any): Observable<T> {

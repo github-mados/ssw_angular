@@ -4,12 +4,13 @@ import { Company } from '../company';
 import { CompanyService } from '../company.service';
 import { Observable } from 'rxjs';
 import { CompanyTableComponent } from '../company-table/company-table.component';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'fbc-company-list',
   standalone: true,
-  imports: [CommonModule,CompanyTableComponent],
+  imports: [CommonModule,CompanyTableComponent, RouterLink],
   templateUrl: './company-list.component.html',
   styleUrl: './company-list.component.scss'
 })
