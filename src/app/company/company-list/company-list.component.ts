@@ -5,6 +5,8 @@ import { CompanyService } from '../company.service';
 import { Observable } from 'rxjs';
 import { CompanyTableComponent } from '../company-table/company-table.component';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectCompanies } from '../../+state/company.selectors';
 
 
 @Component({
@@ -15,23 +17,14 @@ import { RouterLink } from '@angular/router';
   styleUrl: './company-list.component.scss'
 })
 export class CompanyListComponent {
+  private readonly store = inject(Store);
   private readonly companyService = inject(CompanyService);
 
-  public companies$!: Observable<Company[]>;
-
-  
-  ngOnInit(){
-     this.companies$ = this.companyService.getCompanies();
-  
-  }
-
-  getCompanies() {
-    this.companies$ = this.companyService.getCompanies();
-}
+  public companies$ = this.store.select(selectCompanies);
 
   deleteCompany(companyId: number){
     this.companyService.deleteCompany(companyId)
-    .subscribe(() => this.getCompanies());
+    .subscribe();
     }
 
 }

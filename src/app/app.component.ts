@@ -5,6 +5,11 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { CompanyListComponent } from "./company/company-list/company-list.component";
 import { CompanyService } from './company/company.service';
 import { map } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { CompanyActions } from './+state/company.actions';
+import { selectCompanyCount } from './+state/company.selectors';
+
+
 
 @Component({
   selector: 'fbc-root',
@@ -16,13 +21,15 @@ import { map } from 'rxjs';
 export class AppComponent {
   title = 'Melbourne Angular Workshop';
 
-  companiesService = inject(CompanyService);
+  store = inject(Store);
   
   date = new Date();
+  
+  companyCount$ = this.store.select(selectCompanyCount);
 
-  companyCount$ = this.companiesService
-    .getCompanies()
-    .pipe(map((companies) => companies.length));
+  ngOnInit() {
+    this.store.dispatch(CompanyActions.loadCompanies());
+  }
 }
 
 

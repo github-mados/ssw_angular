@@ -9,28 +9,25 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CompanyService {
 
-  private companies$ = new BehaviorSubject<Company[]>([]);
   
   API_BASE = 'https://app-fbc-crm-api-prod.azurewebsites.net/api';
   constructor(
     private readonly httpClient:HttpClient
   ) {
 
-    this.loadCompanies();
+  
 
    }
 
-    private loadCompanies() {
-    this.httpClient
+  
+    getCompanies(): Observable<Company[]> {
+      return this.httpClient
       .get<Company[]>(`${this.API_BASE}/company`)
       .pipe(
         tap(_ => console.log('loadCompanies called')),
         catchError(this.errorHandler<Company[]>),
-      ).subscribe(companies => this.companies$.next(companies));
-    }
-
-    getCompanies(): Observable<Company[]> {
-      return this.companies$;
+      )
+  
     }
 
   getCompany(companyId: number): Observable<Company> {
@@ -40,22 +37,18 @@ export class CompanyService {
 
   deleteCompany(companyId: number): Observable<Company> {
     return this.httpClient.delete<Company>(`${this.API_BASE}/company/${companyId}`)
-    
       .pipe(
-        tap(() => this.loadCompanies()),
         catchError(this.errorHandler<Company>));
     }
   
   updateCompany(company: Company): Observable<Company> {
     return this.httpClient.put<Company>(`${this.API_BASE}/company/${company.id}`,company)
       .pipe(
-        tap(() => this.loadCompanies()),
         catchError(this.errorHandler<Company>));
     }  
    
   addCompany(company: Company): Observable<Company> {
     return this.httpClient.post<Company>(`${this.API_BASE}/company`, {...company,id:0}).pipe(
-      tap(() => this.loadCompanies()),
       catchError(this.errorHandler<Company>)
     );
   }
