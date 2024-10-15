@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Company } from './company';
 import { HttpClient } from '@angular/common/http';
 
@@ -9,29 +9,56 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CompanyService {
 
+  private companies$ = new BehaviorSubject<Company[]>([]);
+  
   API_BASE = 'https://app-fbc-crm-api-prod.azurewebsites.net/api';
   constructor(
     private readonly httpClient:HttpClient
   ) {
 
+    this.loadCompanies();
+
    }
 
+    private loadCompanies() {
+    this.httpClient
+      .get<Company[]>(`${this.API_BASE}/company`)
+      .pipe(
+        tap(_ => console.log('loadCompanies called')),
+        catchError(this.errorHandler<Company[]>),
+      ).subscribe(companies => this.companies$.next(companies));
+    }
 
-   getCompanies(): Observable<Company[]> {
-    return this.httpClient.get<Company[]>(`${this.API_BASE}/company`)
-      .pipe(catchError(this.errorHandler<Company[]>));
+    getCompanies(): Observable<Company[]> {
+      return this.companies$;
+    }
+
+  getCompany(companyId: number): Observable<Company> {
+    return this.httpClient.get<Company>(`${this.API_BASE}/company/${companyId}`)
+      .pipe(catchError(this.errorHandler<Company>));
   }
 
   deleteCompany(companyId: number): Observable<Company> {
     return this.httpClient.delete<Company>(`${this.API_BASE}/company/${companyId}`)
-      .pipe(catchError(this.errorHandler<Company>));
+    
+      .pipe(
+        tap(() => this.loadCompanies()),
+        catchError(this.errorHandler<Company>));
     }
+  
+  updateCompany(company: Company): Observable<Company> {
+    return this.httpClient.put<Company>(`${this.API_BASE}/company/${company.id}`,company)
+      .pipe(
+        tap(() => this.loadCompanies()),
+        catchError(this.errorHandler<Company>));
+    }  
    
-    saveCompany(company: Company): Observable<Company> {
-      return this.httpClient.post<Company>(`${this.API_BASE}/company`, company).pipe(
-        catchError(this.errorHandler<Company>)
-      );
-    }
+  addCompany(company: Company): Observable<Company> {
+    return this.httpClient.post<Company>(`${this.API_BASE}/company`, {...company,id:0}).pipe(
+      tap(() => this.loadCompanies()),
+      catchError(this.errorHandler<Company>)
+    );
+  }
 
 
   private errorHandler<T>(error: any): Observable<T> {

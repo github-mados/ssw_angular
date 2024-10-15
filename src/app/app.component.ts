@@ -1,21 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CompanyListComponent } from "./company/company-list/company-list.component";
+import { CompanyService } from './company/company.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'fbc-root',
   standalone: true,
-  imports: [RouterOutlet,RouterLink, FormsModule, CompanyListComponent],
+  imports: [AsyncPipe,RouterOutlet,RouterLink, FormsModule, CompanyListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Melbourne firebootcamp-crm';
+
+  companiesService = inject(CompanyService);
+  
   date = new Date();
 
   changeTitle(){
     this.title = 'New Title '+Math.random(); 
+
   }
 
+  companyCount$ = this.companiesService
+    .getCompanies()
+    .pipe(map((companies) => companies.length));
 }
+
+

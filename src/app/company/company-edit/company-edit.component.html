@@ -25,13 +25,20 @@
       }
     </div>
   
+    <div class="form-check mt-2">
+      <input type="checkbox" class="form-check-input" id="checkPhone" formControlName="checkPhone" />
+      <label for="checkPhone" class="form-check-label">Has phone number</label>
+    </div>
+
     <div class="form-group">
       <label for="phone">Phone</label>
-      <input type="text" class="form-control" id="phone" formControlName="phone" name="phone">
+      <input type="text" class="form-control" id="phone" formControlName="phone" name="phone" >
     </div>
   
     <div class="form-group">
-      <button class="btn btn-primary" (click)="saveCompany()">Save</button>
+      <button class="btn btn-primary" (click)="saveCompany()">
+        {{isNewCompany ? 'Create' : 'Update'}}
+      </button>
     </div>
   
   </form>
