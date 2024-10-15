@@ -14,16 +14,11 @@ import { map } from 'rxjs';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Melbourne firebootcamp-crm';
+  title = 'Melbourne Angular Workshop';
 
   companiesService = inject(CompanyService);
   
   date = new Date();
-
-  changeTitle(){
-    this.title = 'New Title '+Math.random(); 
-
-  }
 
   companyCount$ = this.companiesService
     .getCompanies()

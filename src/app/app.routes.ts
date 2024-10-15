@@ -3,7 +3,13 @@ import { CompanyListComponent } from './company/company-list/company-list.compon
 import { CompanyEditComponent } from './company/company-edit/company-edit.component';
 
 export const routes: Routes = [
+  
   { path: '', pathMatch: 'full', redirectTo: 'company/list' },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./admin/admin.module').then((m) => m.AdminModule),
+  },
   {
     path: 'company',
     children: [

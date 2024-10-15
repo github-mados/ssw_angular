@@ -1,6 +1,27 @@
 .navbar-nav {
     flex-direction: row;
 }
+
 .active .nav-link {
-    color: mediumspringgreen;
+    opacity: .5;
+  }
+
+.navbar-nav li + li a:before {
+    content: "|";
+    padding-left: 2px;
+    padding-right: 2px;
+    color:magenta;
+    --bs-nav-link-padding-y: 0;
 }
+
+a:hover{
+    text-decoration:underline;
+    color: aqua;
+}
+
+li.active a{
+    color: mediumspringgreen !important;
+}
+a.active {
+    color: mediumspringgreen !important;
+  }
